@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.rasyidin.connectopia" />
+                  <option name="mobileSdkAppId" value="1:935113078481:android:b991323526833581be77f0" />
+                  <option name="projectId" value="connectopia-ba90b" />
+                  <option name="projectNumber" value="935113078481" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
