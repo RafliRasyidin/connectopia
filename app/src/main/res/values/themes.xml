@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.Connectopia" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Connectopia.FullScreen" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
 </resources>
