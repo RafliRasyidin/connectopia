@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -19,13 +18,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.rasyidin.connectopia.data.local.AppPreferences
 import com.rasyidin.connectopia.ui.component.BottomNavBar
 import com.rasyidin.connectopia.ui.navigation.Screen
+import com.rasyidin.connectopia.ui.screen.auth.LoginScreen
 import com.rasyidin.connectopia.ui.screen.chats.ChatsScreen
 import com.rasyidin.connectopia.ui.screen.chatting.ChattingScreen
 import com.rasyidin.connectopia.ui.screen.setting.SettingScreen
+import com.rasyidin.connectopia.ui.screen.splash.SplashScreen
 import com.rasyidin.connectopia.ui.screen.status.StatusScreen
 import com.rasyidin.connectopia.ui.theme.ConnectopiaTheme
+import kotlinx.coroutines.delay
+import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +47,7 @@ class MainActivity : ComponentActivity() {
 fun ConnectopiaApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    prefs: AppPreferences = koinInject(),
 ) {
     var bottomNavBarState by rememberSaveable { mutableStateOf(false) }
     val navBackStack by navController.currentBackStackEntryAsState()
@@ -61,7 +66,7 @@ fun ConnectopiaApp(
         NavHost(
             modifier = Modifier.padding(innerPadding),
             navController = navController,
-            startDestination = Screen.Chats.route,
+            startDestination = Screen.Splash.route,
             builder = {
                 composable(Screen.Chats.route) {
                     LaunchedEffect(Unit) { bottomNavBarState = true }
@@ -78,6 +83,35 @@ fun ConnectopiaApp(
                 composable(Screen.Chatting.route) {
                     LaunchedEffect(Unit) { bottomNavBarState = true }
                     ChattingScreen()
+                }
+                composable(Screen.Login.route) {
+                    LaunchedEffect(Unit) {
+                        bottomNavBarState = false
+                    }
+                    LoginScreen()
+                }
+                composable(Screen.Splash.route) {
+                    SplashScreen()
+                    LaunchedEffect(Unit) {
+                        bottomNavBarState = false
+                        delay(1000)
+                        val isLoggedIn = prefs.getLoginSession()
+                        if (isLoggedIn) {
+                            navController.navigate(Screen.Chats.route) {
+                                popUpTo(Screen.Splash.route) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        } else {
+                            navController.navigate(Screen.Login.route) {
+                                popUpTo(Screen.Splash.route) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        }
+                    }
                 }
             }
         )
