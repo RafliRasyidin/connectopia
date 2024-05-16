@@ -26,13 +26,13 @@ import com.rasyidin.connectopia.ui.screen.chats.ChatsScreen
 import com.rasyidin.connectopia.ui.screen.chatting.ChattingScreen
 import com.rasyidin.connectopia.ui.screen.login.LoginScreen
 import com.rasyidin.connectopia.ui.screen.on_board.OnBoardingScreen
-import com.rasyidin.connectopia.ui.screen.on_board.OnBoardingViewModel
 import com.rasyidin.connectopia.ui.screen.setting.SettingScreen
 import com.rasyidin.connectopia.ui.screen.splash.SplashScreen
 import com.rasyidin.connectopia.ui.screen.status.StatusScreen
 import com.rasyidin.connectopia.ui.theme.ConnectopiaTheme
+import com.rasyidin.connectopia.utils.hideStatusBar
+import com.rasyidin.connectopia.utils.showStatusBar
 import kotlinx.coroutines.delay
-import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
@@ -53,6 +53,8 @@ fun ConnectopiaApp(
     navController: NavHostController = rememberNavController(),
     prefs: AppPreferences = koinInject(),
 ) {
+    val context = LocalContext.current
+
     var bottomNavBarState by rememberSaveable { mutableStateOf(false) }
     val navBackStack by navController.currentBackStackEntryAsState()
     bottomNavBarState = when (navBackStack?.destination?.route) {
@@ -73,12 +75,15 @@ fun ConnectopiaApp(
             startDestination = Screen.Splash.route,
             builder = {
                 composable(Screen.Login.route) {
+                    context.showStatusBar()
                     LoginScreen()
                 }
                 composable(Screen.OnBoarding.route) {
+                    context.showStatusBar()
                     OnBoardingScreen(navController = navController)
                 }
                 composable(Screen.Chats.route) {
+                    context.showStatusBar()
                     LaunchedEffect(Unit) { bottomNavBarState = true }
                     ChatsScreen()
                 }
@@ -96,6 +101,7 @@ fun ConnectopiaApp(
                 }
                 composable(Screen.Splash.route) {
                     SplashScreen()
+                    context.hideStatusBar()
                     LaunchedEffect(Unit) {
                         bottomNavBarState = false
                         delay(1000)
