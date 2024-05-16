@@ -12,6 +12,17 @@ class AppPreferences(
         }
     }
 
+    override fun setOnboardingComplete(onboardingComplete: Boolean) {
+        with(prefs.edit()) {
+            putBoolean(Preferences.PREFS_ONBOARDING_COMPLETE, onboardingComplete)
+            apply()
+        }
+    }
+
+    override fun isOnboardingComplete(): Boolean {
+        return prefs.getBoolean(Preferences.PREFS_ONBOARDING_COMPLETE, false)
+    }
+
     override fun getLoginSession(): Boolean {
         return prefs.getBoolean(Preferences.PREFS_LOGIN_SESSION, false)
     }

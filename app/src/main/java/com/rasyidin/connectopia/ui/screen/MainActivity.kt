@@ -24,6 +24,7 @@ import com.rasyidin.connectopia.ui.navigation.Screen
 import com.rasyidin.connectopia.ui.screen.auth.LoginScreen
 import com.rasyidin.connectopia.ui.screen.chats.ChatsScreen
 import com.rasyidin.connectopia.ui.screen.chatting.ChattingScreen
+import com.rasyidin.connectopia.ui.screen.on_board.OnBoardingScreen
 import com.rasyidin.connectopia.ui.screen.setting.SettingScreen
 import com.rasyidin.connectopia.ui.screen.splash.SplashScreen
 import com.rasyidin.connectopia.ui.screen.status.StatusScreen
@@ -68,6 +69,12 @@ fun ConnectopiaApp(
             navController = navController,
             startDestination = Screen.Splash.route,
             builder = {
+                composable(Screen.Login.route) {
+                    LoginScreen()
+                }
+                composable(Screen.OnBoarding.route) {
+                    OnBoardingScreen(navController = navController)
+                }
                 composable(Screen.Chats.route) {
                     LaunchedEffect(Unit) { bottomNavBarState = true }
                     ChatsScreen()
@@ -84,18 +91,22 @@ fun ConnectopiaApp(
                     LaunchedEffect(Unit) { bottomNavBarState = true }
                     ChattingScreen()
                 }
-                composable(Screen.Login.route) {
-                    LaunchedEffect(Unit) {
-                        bottomNavBarState = false
-                    }
-                    LoginScreen()
-                }
                 composable(Screen.Splash.route) {
                     SplashScreen()
                     LaunchedEffect(Unit) {
                         bottomNavBarState = false
                         delay(1000)
                         val isLoggedIn = prefs.getLoginSession()
+                        val isOnBoarding = prefs.isOnboardingComplete()
+                        if (!isOnBoarding) {
+                            navController.navigate(Screen.OnBoarding.route) {
+                                popUpTo(Screen.Splash.route) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                            return@LaunchedEffect
+                        }
                         if (isLoggedIn) {
                             navController.navigate(Screen.Chats.route) {
                                 popUpTo(Screen.Splash.route) {
