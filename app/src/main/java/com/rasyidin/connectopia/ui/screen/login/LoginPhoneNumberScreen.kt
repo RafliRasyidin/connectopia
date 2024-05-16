@@ -1,4 +1,4 @@
-package com.rasyidin.connectopia.ui.screen.auth
+package com.rasyidin.connectopia.ui.screen.login
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme

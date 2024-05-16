@@ -8,6 +8,7 @@ espressoCoreVersion = "3.5.1"
 activityComposeVersion = "1.8.0"
 composeBom = "2023.08.00"
 googleGmsGoogleServicesVersion = "4.4.1"
+googleGmsAuthVersion = "21.1.1"
 navigationComposeVersion = "2.7.7"
 lifecycleVersion = "2.7.0"
 firebaseAuthVersion = "23.0.0"
@@ -51,10 +52,13 @@ androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintLayoutVersion" }
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintLayoutComposeVersion" }
 
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthVersion" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreVersion" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageVersion" }
 firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingVersion" }
+
+google-gms-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googleGmsAuthVersion" }
 
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koinVersion" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinVersion" }

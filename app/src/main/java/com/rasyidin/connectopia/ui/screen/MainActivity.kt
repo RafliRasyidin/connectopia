@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,15 +22,17 @@ import androidx.navigation.compose.rememberNavController
 import com.rasyidin.connectopia.data.local.AppPreferences
 import com.rasyidin.connectopia.ui.component.BottomNavBar
 import com.rasyidin.connectopia.ui.navigation.Screen
-import com.rasyidin.connectopia.ui.screen.auth.LoginScreen
 import com.rasyidin.connectopia.ui.screen.chats.ChatsScreen
 import com.rasyidin.connectopia.ui.screen.chatting.ChattingScreen
+import com.rasyidin.connectopia.ui.screen.login.LoginScreen
 import com.rasyidin.connectopia.ui.screen.on_board.OnBoardingScreen
+import com.rasyidin.connectopia.ui.screen.on_board.OnBoardingViewModel
 import com.rasyidin.connectopia.ui.screen.setting.SettingScreen
 import com.rasyidin.connectopia.ui.screen.splash.SplashScreen
 import com.rasyidin.connectopia.ui.screen.status.StatusScreen
 import com.rasyidin.connectopia.ui.theme.ConnectopiaTheme
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {

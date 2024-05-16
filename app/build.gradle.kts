@@ -84,9 +84,11 @@ dependencies {
 
     // Firebase dependencies
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.messaging.ktx)
+    implementation(libs.google.gms.auth)
 
     // Coil dependencies
     implementation(libs.coil.compose)
