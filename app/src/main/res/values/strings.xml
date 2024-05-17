@@ -11,4 +11,15 @@
     <string name="or">Or</string>
     <string name="login_with_google">Login With Google</string>
     <string name="logout_successful">Logout Successful</string>
+    <string name="account">Account</string>
+    <string name="details">Details</string>
+    <string name="email">Email</string>
+    <string name="blocked_users">Blocked Users</string>
+    <string name="manage_blocked_users">Manage blocked users</string>
+    <string name="chat_customisations">Chat Customisations</string>
+    <string name="personalize_your_chat_experience">Personalize your chat experience</string>
+    <string name="upload_quality">Upload Quality</string>
+    <string name="adjust_image_and_status_quality">Adjust image and status quality</string>
+    <string name="upload_quality_description">Watch your image change instantly as you move the slider. Find the perfect quality before you share</string>
+    <string name="quality_image">Quality: %s</string>
 </resources>
