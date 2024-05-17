@@ -31,13 +31,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.rasyidin.connectopia.R
 import com.rasyidin.connectopia.data.local.AppPreferences
+import com.rasyidin.connectopia.model.user.UserData
 import com.rasyidin.connectopia.ui.navigation.Screen
-import com.rasyidin.connectopia.ui.screen.on_board.UserData
 import com.rasyidin.connectopia.ui.theme.ConnectopiaTheme
 import com.rasyidin.connectopia.utils.showShortToast
 import org.koin.androidx.compose.koinViewModel
@@ -55,7 +54,7 @@ fun SettingScreen(
     val context = LocalContext.current
     LaunchedEffect(key1 = signOutState.isSuccessful) {
         if (signOutState.isSuccessful) {
-            context.showShortToast(context.getString(R.string.login_success))
+            context.showShortToast(context.getString(R.string.logout_successful))
             prefs.setLoginSession(false)
             navController.navigate(Screen.OnBoarding.route) {
                 popUpTo(Screen.OnBoarding.route) {
@@ -64,6 +63,21 @@ fun SettingScreen(
             }
         }
     }
+    SettingContent(
+        modifier = modifier,
+        userData = userData,
+        onLogoutClick = {
+            viewModel.logout()
+        }
+    )
+}
+
+@Composable
+fun SettingContent(
+    modifier: Modifier = Modifier,
+    userData: UserData,
+    onLogoutClick: () -> Unit = {},
+) {
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -84,10 +98,8 @@ fun SettingScreen(
             UserProfile(userData = userData,)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = {
-                    viewModel.signOut()
-                }
-            ) {
+                onClick = onLogoutClick
+            ){
                 Text(text = stringResource(id = R.string.logout))
             }
         }
@@ -137,10 +149,10 @@ fun UserProfile(
 
 @Preview
 @Composable
-fun PreviewSettingScreen(modifier: Modifier = Modifier) {
+fun PreviewSettingContent(modifier: Modifier = Modifier) {
     ConnectopiaTheme {
-        SettingScreen(
-            navController = rememberNavController()
+        SettingContent(
+            userData = UserData()
         )
     }
 }

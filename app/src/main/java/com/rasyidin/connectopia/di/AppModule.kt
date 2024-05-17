@@ -2,6 +2,9 @@ package com.rasyidin.connectopia.di
 
 import android.content.Context
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.rasyidin.connectopia.data.local.AppPreferences
 import com.rasyidin.connectopia.data.local.Preferences
 import com.rasyidin.connectopia.ui.screen.on_board.GoogleAuthUiClient
@@ -17,7 +20,9 @@ val modulePreferences = module {
 }
 
 val moduleViewModel = module {
-    single { GoogleAuthUiClient(oneTapClient = Identity.getSignInClient(androidApplication())) }
-    viewModel { OnBoardingViewModel() }
-    viewModel { SettingViewModel(get()) }
+    single { Firebase.firestore }
+    single { Firebase.auth }
+    single { GoogleAuthUiClient(oneTapClient = Identity.getSignInClient(androidApplication()), auth = get()) }
+    viewModel { OnBoardingViewModel(get()) }
+    viewModel { SettingViewModel(get(), get()) }
 }

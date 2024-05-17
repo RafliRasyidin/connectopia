@@ -2,17 +2,20 @@ package com.rasyidin.connectopia.ui.screen.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FirebaseFirestore
+import com.rasyidin.connectopia.model.user.UserData
 import com.rasyidin.connectopia.ui.screen.on_board.GoogleAuthUiClient
 import com.rasyidin.connectopia.ui.screen.on_board.SignOutResult
-import com.rasyidin.connectopia.ui.screen.on_board.UserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class SettingViewModel(
-    private val authClient: GoogleAuthUiClient
+    private val authClient: GoogleAuthUiClient,
+    private val db: FirebaseFirestore
 ) : ViewModel() {
 
     private val _signOutState: MutableStateFlow<SignOutResult> = MutableStateFlow(SignOutResult())
@@ -22,10 +25,10 @@ class SettingViewModel(
     val userDataState = _userDataState.asStateFlow()
 
     init {
-        getSignedUserData()
+        getUserData()
     }
 
-    fun signOut() {
+    fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = authClient.signOut()
             withContext(Dispatchers.Main) {
@@ -34,9 +37,14 @@ class SettingViewModel(
         }
     }
 
-    fun getSignedUserData() {
-        authClient.getSignedInUser()?.run {
-            _userDataState.value = this
+    fun getUserData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            authClient.getSignedInUser()?.run {
+                val data = db.collection("users").document(userId).get().await().toObject(UserData::class.java)
+                if (data != null) {
+                    _userDataState.value = data
+                }
+            }
         }
     }
 
