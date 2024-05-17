@@ -1,12 +1,8 @@
 package com.rasyidin.connectopia.ui.screen.setting
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
-import com.rasyidin.connectopia.R
-import com.rasyidin.connectopia.model.component.ProfileSetting
 import com.rasyidin.connectopia.model.user.UserData
 import com.rasyidin.connectopia.ui.screen.on_board.GoogleAuthUiClient
 import com.rasyidin.connectopia.ui.screen.on_board.SignOutResult
