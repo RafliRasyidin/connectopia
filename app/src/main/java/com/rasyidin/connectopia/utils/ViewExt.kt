@@ -6,7 +6,6 @@ import android.content.ContextWrapper
 import android.widget.Toast
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 
 fun Context.showShortToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

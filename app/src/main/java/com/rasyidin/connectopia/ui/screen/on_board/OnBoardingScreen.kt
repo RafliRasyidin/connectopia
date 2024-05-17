@@ -47,9 +47,9 @@ import org.koin.compose.koinInject
 fun OnBoardingScreen(
     modifier: Modifier = Modifier,
     viewModel: OnBoardingViewModel = koinViewModel(),
-    navController : NavHostController,
     prefs: AppPreferences = koinInject(),
     signInClient: GoogleAuthUiClient = koinInject(),
+    navController : NavHostController,
 ) {
     val context = LocalContext.current
     val state by viewModel.signInState.collectAsStateWithLifecycle()
@@ -83,7 +83,7 @@ fun OnBoardingScreen(
         if (state.isSignedInSuccessful) {
             context.showShortToast("Sign in successful")
             navController.navigate(Screen.Chats.route) {
-                prefs.setOnboardingComplete(true)
+                prefs.setLoginSession(true)
                 popUpTo(Screen.OnBoarding.route) {
                     inclusive = true
                 }
@@ -133,10 +133,10 @@ fun OnBoardingScreen(
                     navController.navigate(Screen.Login.route)
                 }
             ) {
-                Text(text = "Login With Phone Number",)
+                Text(text = stringResource(id = R.string.login_with_phone_number))
             }
             Text(
-                text = "Or",
+                text = stringResource(id = R.string.or),
                 modifier = Modifier.padding(bottom = 8.dp),
             )
             OutlinedButton(
@@ -147,14 +147,14 @@ fun OnBoardingScreen(
                     scope.launch {
                         val signInIntentSender = signInClient.signIn()
                         if (signInIntentSender == null) {
-                            context.showShortToast("Sign in failed")
+                            context.showShortToast(context.getString(R.string.login_failed))
                             return@launch
                         }
                         launcher.launch(IntentSenderRequest.Builder(signInIntentSender).build())
                     }
                 }
             ) {
-                Text(text = "Login With Google",)
+                Text(text = stringResource(id = R.string.login_with_google))
                 Spacer(modifier = Modifier.padding(end = 8.dp))
                 Image(
                     painter = painterResource(id = R.drawable.ic_google),

@@ -4,4 +4,10 @@
     <string name="chats">Chats</string>
     <string name="settings">Settings</string>
     <string name="on_board_message">Connect easily with others and build meaningful relationship</string>
+    <string name="login_success">Login successful</string>
+    <string name="login_failed">Login failed</string>
+    <string name="logout">Logout</string>
+    <string name="login_with_phone_number">Login With Phone Number</string>
+    <string name="or">Or</string>
+    <string name="login_with_google">Login With Google</string>
 </resources>

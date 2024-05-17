@@ -10,6 +10,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.rasyidin.connectopia.utils.Constants
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 
 class GoogleAuthUiClient(private val oneTapClient: SignInClient) {
@@ -55,13 +56,15 @@ class GoogleAuthUiClient(private val oneTapClient: SignInClient) {
         }
     }
 
-    suspend fun signOut() {
+    suspend fun signOut() : SignOutResult {
         try {
             oneTapClient.signOut().await()
             auth.signOut()
+            return SignOutResult(true)
         } catch (e: Exception) {
             e.printStackTrace()
             if (e is CancellationException) throw e
+            return SignOutResult(false, e.message)
         }
     }
 
@@ -69,7 +72,9 @@ class GoogleAuthUiClient(private val oneTapClient: SignInClient) {
         UserData(
             userId = uid,
             username = displayName,
-            profilePictureUrl = photoUrl?.toString()
+            profilePictureUrl = photoUrl?.toString(),
+            email = email,
+            phoneNumber = phoneNumber,
         )
     }
 

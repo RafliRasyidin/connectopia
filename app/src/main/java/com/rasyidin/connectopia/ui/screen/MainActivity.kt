@@ -93,7 +93,7 @@ fun ConnectopiaApp(
                 }
                 composable(Screen.Setting.route) {
                     LaunchedEffect(Unit) { bottomNavBarState = true }
-                    SettingScreen()
+                    SettingScreen(navController = navController)
                 }
                 composable(Screen.Chatting.route) {
                     LaunchedEffect(Unit) { bottomNavBarState = true }
@@ -106,8 +106,7 @@ fun ConnectopiaApp(
                         bottomNavBarState = false
                         delay(1000)
                         val isLoggedIn = prefs.getLoginSession()
-                        val isOnBoarding = prefs.isOnboardingComplete()
-                        if (!isOnBoarding) {
+                        if (!isLoggedIn) {
                             navController.navigate(Screen.OnBoarding.route) {
                                 popUpTo(Screen.Splash.route) {
                                     inclusive = true
@@ -116,20 +115,11 @@ fun ConnectopiaApp(
                             }
                             return@LaunchedEffect
                         }
-                        if (isLoggedIn) {
-                            navController.navigate(Screen.Chats.route) {
-                                popUpTo(Screen.Splash.route) {
-                                    inclusive = true
-                                }
-                                launchSingleTop = true
+                        navController.navigate(Screen.Chats.route) {
+                            popUpTo(Screen.Splash.route) {
+                                inclusive = true
                             }
-                        } else {
-                            navController.navigate(Screen.Login.route) {
-                                popUpTo(Screen.Splash.route) {
-                                    inclusive = true
-                                }
-                                launchSingleTop = true
-                            }
+                            launchSingleTop = true
                         }
                     }
                 }
