@@ -85,7 +85,7 @@ fun ConnectopiaApp(
                 composable(Screen.Chats.route) {
                     context.showStatusBar()
                     LaunchedEffect(Unit) { bottomNavBarState = true }
-                    ChatsScreen()
+                    ChatsScreen(navController = navController)
                 }
                 composable(Screen.Status.route) {
                     LaunchedEffect(Unit) { bottomNavBarState = true }

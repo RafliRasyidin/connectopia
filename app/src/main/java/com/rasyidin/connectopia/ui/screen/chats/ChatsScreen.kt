@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,12 +26,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.rasyidin.connectopia.R
 import com.rasyidin.connectopia.model.component.SearchBar
+import com.rasyidin.connectopia.model.component.UserChat
+import com.rasyidin.connectopia.model.component.dummyUserChatLists
+import com.rasyidin.connectopia.ui.component.CardUserChat
 import com.rasyidin.connectopia.ui.theme.ConnectopiaTheme
 
 @Composable
-fun ChatsScreen(modifier: Modifier = Modifier) {
+fun ChatsScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+) {
     ChatsContent(modifier = modifier)
 }
 
@@ -80,6 +89,31 @@ fun ChatsContent(
                     )
                 }
             }
+            Chats(
+                chats = dummyUserChatLists,
+                modifier = Modifier.padding(horizontal = 12.dp),
+                onClick = {
+
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun Chats(
+    modifier: Modifier = Modifier,
+    chats: List<UserChat>,
+    onClick: (UserChat) -> Unit
+) {
+    LazyColumn(
+        modifier =  modifier.fillMaxWidth()
+    ) {
+        items(chats) { chat ->
+            CardUserChat(
+                chat = chat,
+                onClick = onClick
+            )
         }
     }
 }

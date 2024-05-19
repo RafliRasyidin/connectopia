@@ -48,7 +48,7 @@ fun SearchBar(
     Row(
         modifier = modifier
             .background(
-                shape = RoundedCornerShape(4.dp),
+                shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.secondaryContainer
             )
     ) {
