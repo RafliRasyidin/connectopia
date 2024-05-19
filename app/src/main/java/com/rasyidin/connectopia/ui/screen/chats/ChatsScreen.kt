@@ -18,6 +18,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -97,6 +99,19 @@ fun ChatsContent(
                         .padding(start = 12.dp),
                 )
                 Spacer(modifier = Modifier.width(12.dp))
+                FloatingActionButton(
+                    shape = RoundedCornerShape(8.dp),
+                    onClick = {  },
+                    elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 0.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_plus),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(18.dp)
+                            .size(16.dp)
+                    )
+                }
                 Box(
                     modifier = Modifier
                         .padding(end = 12.dp)
@@ -106,13 +121,7 @@ fun ChatsContent(
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_plus),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(18.dp)
-                            .size(16.dp)
-                    )
+
                 }
             }
             Chats(
