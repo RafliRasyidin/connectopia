@@ -161,7 +161,8 @@ private fun CardContactPreview() {
                 profilePic = "https://picsum.photos/200/300",
                 unreadChatCount = 2,
                 lastChatTimeStamp = 1713416744,
-                isOnline = true
+                isOnline = true,
+                userId = ""
             )
         )
     }

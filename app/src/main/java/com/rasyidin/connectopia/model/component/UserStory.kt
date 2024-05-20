@@ -5,6 +5,7 @@ data class UserStory(
     val userId: String,
     val story: String,
     val createdAt: Long,
+    val validUntil: Long,
     val isViewed: Boolean,
 )
 
@@ -28,76 +29,40 @@ val dummyStories = listOf(
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
-            ),
-        )
-    ),
-    Stories(
-        userId = "",
-        username = "Rasyidin",
-        stories = listOf(
-            UserStory(
-                id = "123",
-                userId = "",
-                story = "https://picsum.photos/200/300",
-                createdAt = System.currentTimeMillis(),
-                isViewed = false
-            ),
-            UserStory(
-                id = "123",
-                userId = "",
-                story = "https://picsum.photos/200/300",
-                createdAt = System.currentTimeMillis(),
-                isViewed = false
-            ),
-            UserStory(
-                id = "123",
-                userId = "",
-                story = "https://picsum.photos/200/300",
-                createdAt = System.currentTimeMillis(),
-                isViewed = false
-            ),
-            UserStory(
-                id = "123",
-                userId = "",
-                story = "https://picsum.photos/200/300",
-                createdAt = System.currentTimeMillis(),
-                isViewed = false
-            ),
-            UserStory(
-                id = "123",
-                userId = "",
-                story = "https://picsum.photos/200/300",
-                createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
         )
     ),
@@ -110,35 +75,40 @@ val dummyStories = listOf(
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
         )
     ),
@@ -151,35 +121,86 @@ val dummyStories = listOf(
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
             ),
             UserStory(
                 id = "123",
                 userId = "",
                 story = "https://picsum.photos/200/300",
                 createdAt = System.currentTimeMillis(),
-                isViewed = false
+                isViewed = false,
+                validUntil = 0
+            ),
+        )
+    ),
+    Stories(
+        userId = "",
+        username = "Rasyidin",
+        stories = listOf(
+            UserStory(
+                id = "123",
+                userId = "",
+                story = "https://picsum.photos/200/300",
+                createdAt = System.currentTimeMillis(),
+                isViewed = false,
+                validUntil = 0
+            ),
+            UserStory(
+                id = "123",
+                userId = "",
+                story = "https://picsum.photos/200/300",
+                createdAt = System.currentTimeMillis(),
+                isViewed = false,
+                validUntil = 0
+            ),
+            UserStory(
+                id = "123",
+                userId = "",
+                story = "https://picsum.photos/200/300",
+                createdAt = System.currentTimeMillis(),
+                isViewed = false,
+                validUntil = 0
+            ),
+            UserStory(
+                id = "123",
+                userId = "",
+                story = "https://picsum.photos/200/300",
+                createdAt = System.currentTimeMillis(),
+                isViewed = false,
+                validUntil = 0
+            ),
+            UserStory(
+                id = "123",
+                userId = "",
+                story = "https://picsum.photos/200/300",
+                createdAt = System.currentTimeMillis(),
+                isViewed = false,
+                validUntil = 0
             ),
         )
     )

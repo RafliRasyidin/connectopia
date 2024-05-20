@@ -1,6 +1,7 @@
 package com.rasyidin.connectopia.ui.screen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.Event.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.rasyidin.connectopia.data.local.AppPreferences
 import com.rasyidin.connectopia.ui.component.BottomNavBar
+import com.rasyidin.connectopia.ui.component.ComposableLifecycle
 import com.rasyidin.connectopia.ui.navigation.Screen
 import com.rasyidin.connectopia.ui.screen.chats.ChatsScreen
 import com.rasyidin.connectopia.ui.screen.chatting.ChattingScreen
@@ -33,6 +37,7 @@ import com.rasyidin.connectopia.ui.theme.ConnectopiaTheme
 import com.rasyidin.connectopia.utils.hideStatusBar
 import com.rasyidin.connectopia.utils.showStatusBar
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
@@ -52,11 +57,19 @@ fun ConnectopiaApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     prefs: AppPreferences = koinInject(),
+    viewModel: MainViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
-
     var bottomNavBarState by rememberSaveable { mutableStateOf(false) }
     val navBackStack by navController.currentBackStackEntryAsState()
+    ComposableLifecycle { _, event ->
+        if (event == ON_START) {
+            viewModel.setOnlineSession(true)
+        }
+        if (event == ON_STOP) {
+            viewModel.setOnlineSession(false)
+        }
+    }
     bottomNavBarState = when (navBackStack?.destination?.route) {
         Screen.Chats.route, Screen.Status.route, Screen.Setting.route -> true
         else -> false

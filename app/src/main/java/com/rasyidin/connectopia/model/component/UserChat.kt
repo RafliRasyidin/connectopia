@@ -2,6 +2,7 @@ package com.rasyidin.connectopia.model.component
 
 
 data class UserChat(
+    val userId: String,
     val email: String,
     val username: String,
     val lastChat: String,
@@ -21,7 +22,8 @@ val dummyUserChatLists = listOf(
         profilePic = "https://picsum.photos/200/300",
         unreadChatCount = 1,
         lastChatTimeStamp = System.currentTimeMillis(),
-        isOnline = true
+        isOnline = true,
+        userId = "1"
     ),
     UserChat(
         email = "john.c.calhoun@examplepetstore.com",
@@ -31,7 +33,8 @@ val dummyUserChatLists = listOf(
         profilePic = "https://picsum.photos/200/300",
         unreadChatCount = 0,
         lastChatTimeStamp = 1716008744,
-        isOnline = true
+        isOnline = true,
+        userId = "1"
     ),
     UserChat(
         email = "john.c.calhoun@examplepetstore.com",
@@ -41,7 +44,8 @@ val dummyUserChatLists = listOf(
         profilePic = "https://picsum.photos/200/300",
         unreadChatCount = 2,
         lastChatTimeStamp = 1713416744,
-        isOnline = false
+        isOnline = false,
+        userId = "1"
     ),
     UserChat(
         email = "john.c.calhoun@examplepetstore.com",
@@ -51,6 +55,7 @@ val dummyUserChatLists = listOf(
         profilePic = "https://picsum.photos/200/300",
         lastChatTimeStamp = 1613416744,
         unreadChatCount = 5,
-        isOnline = true
+        isOnline = true,
+        userId = "1"
     )
 )

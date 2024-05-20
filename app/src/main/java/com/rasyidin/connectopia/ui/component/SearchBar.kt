@@ -47,7 +47,7 @@ fun SearchBar(
     Row(
         modifier = modifier
             .background(
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(4.dp),
                 color = MaterialTheme.colorScheme.secondaryContainer
             )
     ) {
@@ -60,7 +60,71 @@ fun SearchBar(
                 text = newText
                 onQueryChange(text)
             },
-
+            colors = TextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
+                selectionColors = TextSelectionColors(
+                    handleColor = MaterialTheme.colorScheme.primary,
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ),
+            textStyle = MaterialTheme.typography.labelSmall,
+            enabled = enabled,
+            singleLine = true,
+            placeholder = {
+                Text(
+                    text = hint,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            trailingIcon = {
+                AnimatedVisibility(visible = text.isNotEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .size(16.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.tertiary,
+                                shape = CircleShape
+                            )
+                            .clickable {
+                                text = ""
+                                onQueryChange(text)
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_close),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onTertiary,
+                            modifier = Modifier
+                                .size(16.dp)
+                                .padding(4.dp)
+                        )
+                    }
+                }
+            },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_magnifier),
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    onSearch(text)
+                }
+            )
         )
     }
 }
