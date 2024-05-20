@@ -3,6 +3,7 @@ package com.rasyidin.connectopia.ui.screen.on_board
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
+import com.rasyidin.connectopia.data.local.AppPreferences
 import com.rasyidin.connectopia.model.user.UserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class OnBoardingViewModel(private val db: FirebaseFirestore) : ViewModel() {
+class OnBoardingViewModel(
+    private val db: FirebaseFirestore,
+    private val prefs: AppPreferences
+) : ViewModel() {
 
     private val _signInState = MutableStateFlow(SignInState())
     val signInState = _signInState.asStateFlow()
@@ -32,6 +36,7 @@ class OnBoardingViewModel(private val db: FirebaseFirestore) : ViewModel() {
                     } else {
                         db.collection("users").document(result.data.userId).set(result.data).await()
                     }
+                    prefs.setUserId(result.data.userId)
                     signState.copy(isSignedInSuccessful = true)
                 }
             } catch (e: Exception) {

@@ -24,7 +24,7 @@ val moduleViewModel = module {
     single { Firebase.firestore }
     single { Firebase.auth }
     single { GoogleAuthUiClient(oneTapClient = Identity.getSignInClient(androidApplication()), auth = get()) }
-    viewModel { OnBoardingViewModel(get()) }
+    viewModel { OnBoardingViewModel(get(), get()) }
     viewModel { SettingViewModel(get(), get(), get()) }
     viewModel { ChatsViewModel(get(), get()) }
 }

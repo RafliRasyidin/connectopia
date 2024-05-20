@@ -37,7 +37,7 @@ fun BottomNavBar(
         val outlineColor = MaterialTheme.colorScheme.outline
         NavigationBar(
             modifier = modifier,
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = backgroundColor
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
