@@ -22,4 +22,7 @@
     <string name="adjust_image_and_status_quality">Adjust image and status quality</string>
     <string name="upload_quality_description">Watch your image change instantly as you move the slider. Find the perfect quality before you share</string>
     <string name="quality_image">Quality: %s</string>
+    <string name="add_new_user">Add New User</string>
+    <string name="input_email_user">Input email user</string>
+    <string name="submit">Submit</string>
 </resources>

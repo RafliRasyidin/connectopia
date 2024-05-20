@@ -92,7 +92,7 @@ fun ChatsScreen(
                         .padding(top = 16.dp),
                 ) {
                     Text(
-                        text = "Add New User",
+                        text = stringResource(id = R.string.add_new_user),
                         style = MaterialTheme.typography.labelLarge.copy(
                             fontSize = 16.sp
                         ),
@@ -288,7 +288,7 @@ fun BottomSheetAddUserContent(
             .padding(horizontal = 12.dp),
     ) {
         Text(
-            text = "Input email user",
+            text = stringResource(id = R.string.input_email_user),
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -304,7 +304,7 @@ fun BottomSheetAddUserContent(
             enabled = enabled
         ) {
             Text(
-                text = "Submit"
+                text = stringResource(id = R.string.submit)
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
