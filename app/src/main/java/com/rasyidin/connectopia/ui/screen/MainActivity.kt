@@ -96,7 +96,7 @@ fun ConnectopiaApp(
                     SettingScreen(navController = navController)
                 }
                 composable(Screen.Chatting.route) {
-                    LaunchedEffect(Unit) { bottomNavBarState = true }
+                    LaunchedEffect(Unit) { bottomNavBarState = false }
                     ChattingScreen()
                 }
                 composable(Screen.Splash.route) {

@@ -7,4 +7,7 @@ data class UserData(
     val phoneNumber: String? = null,
     val email: String? = null,
     val bio: String? = null,
+    val chatList: List<String> = emptyList(),
+    val blockedUsers: List<String> = emptyList(),
+    val isOnline: Boolean = false,
 )

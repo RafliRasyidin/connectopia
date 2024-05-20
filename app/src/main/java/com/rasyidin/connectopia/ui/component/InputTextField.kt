@@ -1,11 +1,12 @@
-package com.rasyidin.connectopia.model.component
+package com.rasyidin.connectopia.ui.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -35,31 +36,31 @@ import com.rasyidin.connectopia.R
 import com.rasyidin.connectopia.ui.theme.ConnectopiaTheme
 
 @Composable
-fun SearchBar(
+fun InputTextField(
     modifier: Modifier = Modifier,
     value: String = "",
     hint: String = "",
     enabled: Boolean = true,
-    onSearch: (String) -> Unit = {},
     onQueryChange: (String) -> Unit = {},
-    onFocusChange: (Boolean) -> Unit = {}
+    onFocusedChange: (Boolean) -> Unit = {},
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    keyboardActions: KeyboardActions = KeyboardActions()
 ) {
     var text by remember { mutableStateOf(value) }
     Row(
-        modifier = modifier
-            .background(
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.secondaryContainer
-            )
+        modifier = modifier.background(
+            shape = RoundedCornerShape(8.dp),
+            color = MaterialTheme.colorScheme.secondaryContainer
+        )
     ) {
         TextField(
             modifier = Modifier
                 .weight(1F)
-                .onFocusChanged { onFocusChange(it.isFocused) },
+                .onFocusChanged { onFocusedChange(it.isFocused) },
             value = text,
             onValueChange = { newText ->
                 text = newText
-                onQueryChange(text)
+                onQueryChange(newText)
             },
             colors = TextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -87,7 +88,12 @@ fun SearchBar(
                 )
             },
             trailingIcon = {
-                AnimatedVisibility(visible = text.isNotEmpty()) {
+                AnimatedVisibility(
+                    visible = text.isNotEmpty(),
+                    enter = fadeIn() + slideInHorizontally(
+                        initialOffsetX = { it }
+                    )
+                ) {
                     Box(
                         modifier = Modifier
                             .size(16.dp)
@@ -112,30 +118,16 @@ fun SearchBar(
                     }
                 }
             },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_magnifier),
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                )
-            },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    onSearch(text)
-                }
-            )
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewSearchBar() {
+private fun PreviewInputTextField(modifier: Modifier = Modifier) {
     ConnectopiaTheme {
-        SearchBar(
-            hint = "Ini adalah hint"
-        )
+        InputTextField()
     }
 }

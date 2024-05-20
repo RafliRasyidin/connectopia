@@ -3,6 +3,7 @@ package com.rasyidin.connectopia.ui.screen.setting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
+import com.rasyidin.connectopia.data.local.AppPreferences
 import com.rasyidin.connectopia.model.user.UserData
 import com.rasyidin.connectopia.ui.screen.on_board.GoogleAuthUiClient
 import com.rasyidin.connectopia.ui.screen.on_board.SignOutResult
@@ -15,7 +16,8 @@ import kotlinx.coroutines.withContext
 
 class SettingViewModel(
     private val authClient: GoogleAuthUiClient,
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
+    private val prefs: AppPreferences
 ) : ViewModel() {
 
     private val _signOutState: MutableStateFlow<SignOutResult> = MutableStateFlow(SignOutResult())
@@ -31,6 +33,7 @@ class SettingViewModel(
     fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = authClient.signOut()
+            prefs.clearPreferences()
             withContext(Dispatchers.Main) {
                 _signOutState.value = result
             }
