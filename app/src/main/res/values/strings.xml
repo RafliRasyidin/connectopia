@@ -25,4 +25,9 @@
     <string name="add_new_user">Add New User</string>
     <string name="input_email_user">Input email user</string>
     <string name="submit">Submit</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="find">Find</string>
+    <string name="success_add_friend">Success to Add Friend</string>
+    <string name="error_unknown">An error unknow occured</string>
+    <string name="user_not_found">User Not Found</string>
 </resources>

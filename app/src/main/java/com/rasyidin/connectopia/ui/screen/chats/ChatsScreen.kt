@@ -1,11 +1,11 @@
 package com.rasyidin.connectopia.ui.screen.chats
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -43,9 +45,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -55,22 +59,33 @@ import com.rasyidin.connectopia.model.component.UserChat
 import com.rasyidin.connectopia.model.component.UserStory
 import com.rasyidin.connectopia.model.component.dummyStories
 import com.rasyidin.connectopia.model.component.dummyUserChatLists
+import com.rasyidin.connectopia.model.user.UserData
 import com.rasyidin.connectopia.ui.component.CardUserChat
 import com.rasyidin.connectopia.ui.component.InputTextField
 import com.rasyidin.connectopia.ui.component.SearchBar
 import com.rasyidin.connectopia.ui.navigation.Screen
 import com.rasyidin.connectopia.ui.theme.ConnectopiaTheme
+import com.rasyidin.connectopia.utils.UiEvent
+import com.rasyidin.connectopia.utils.showShortToast
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    viewModel: ChatsViewModel = koinViewModel(),
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    val addUserState by viewModel.addUserState.collectAsStateWithLifecycle(
+        initialValue = UiEvent.Idle(),
+    )
+    val findUserState by viewModel.findUserState.collectAsStateWithLifecycle(
+        initialValue = UiEvent.Idle(),
+    )
     ChatsContent(
         modifier = modifier,
         onClickChat = { userStory ->
@@ -86,30 +101,23 @@ fun ChatsScreen(
             onDismissRequest = { showBottomSheet = false },
             sheetState = sheetState,
             dragHandle = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.add_new_user),
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            fontSize = 16.sp
-                        ),
-                        modifier = Modifier.padding(horizontal = 12.dp)
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    HorizontalDivider(
-                        thickness = .5.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant
-                    )
-                }
+                HandleSheetAddUser()
             }
         ) {
             BottomSheetAddUserContent(
-                onClick = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) showBottomSheet = false
+                addUserState = addUserState,
+                onClickFind = { email ->
+                    viewModel.getUserByEmail(email)
+                },
+                onClickAddFriend = { userId ->
+                    viewModel.addUserAsFriend(userId)
+                },
+                findUserState = findUserState,
+                onDismiss = {
+                    scope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        showBottomSheet = false
                     }
                 }
             )
@@ -124,7 +132,6 @@ fun ChatsContent(
     onClickChat: (UserChat) -> Unit,
     onClickAdd: () -> Unit
 ) {
-
     Surface(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -177,17 +184,7 @@ fun ChatsContent(
                             .size(16.dp)
                     )
                 }
-                Box(
-                    modifier = Modifier
-                        .padding(end = 12.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            shape = RoundedCornerShape(4.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-
-                }
+                Spacer(modifier = Modifier.width(12.dp))
             }
             Chats(
                 chats = dummyUserChatLists,
@@ -276,36 +273,143 @@ fun Chats(
 }
 
 @Composable
+fun HandleSheetAddUser(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+    ) {
+        Text(
+            text = stringResource(id = R.string.add_new_user),
+            style = MaterialTheme.typography.labelLarge.copy(
+                fontSize = 16.sp
+            ),
+            modifier = Modifier.padding(horizontal = 12.dp)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        HorizontalDivider(
+            thickness = .5.dp,
+            color = MaterialTheme.colorScheme.outlineVariant
+        )
+    }
+}
+
+@Composable
 fun BottomSheetAddUserContent(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    addUserState: UiEvent<UserData>,
+    findUserState: UiEvent<UserData>,
+    onClickFind: (String) -> Unit = {},
+    onClickAddFriend: (String) -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
     var enabled by remember { mutableStateOf(false) }
+    var email by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    if (findUserState is UiEvent.Failure) {
+        context.showShortToast(findUserState.message.asString())
+    }
+    if (addUserState is UiEvent.Failure) {
+        context.showShortToast(addUserState.message.asString())
+    }
+    if (addUserState is UiEvent.Success) {
+        context.showShortToast(context.getString(R.string.success_add_friend))
+        onDismiss()
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 16.dp)
             .padding(horizontal = 12.dp),
     ) {
-        Text(
-            text = stringResource(id = R.string.input_email_user),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        InputTextField(
-            onQueryChange = { newText ->
-                enabled = newText.isNotEmpty()
+        if (findUserState is UiEvent.Success) {
+            val userData = findUserState.data
+            Row(
+                modifier = Modifier
+                    .height(IntrinsicSize.Max)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(userData?.profilePictureUrl)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(id = R.drawable.ic_profile),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp)
+                ) {
+                    Text(
+                        text = userData?.username.orEmpty(),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        text = userData?.email.orEmpty(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onClick,
-            enabled = enabled
-        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    onClickAddFriend(userData?.userId ?: "")
+                },
+                enabled = true
+            ) {
+                if (addUserState is UiEvent.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                } else {
+                    Text(text = stringResource(id = R.string.add_friend))
+                }
+            }
+        } else {
             Text(
-                text = stringResource(id = R.string.submit)
+                text = stringResource(id = R.string.input_email_user),
+                style = MaterialTheme.typography.titleMedium
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            InputTextField(
+                onQueryChange = { newText ->
+                    email = newText
+                    enabled = email.isNotEmpty()
+                }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    onClickFind(email)
+                },
+                enabled = enabled
+            ) {
+                if (findUserState is UiEvent.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                } else {
+                    Text(text = stringResource(id = R.string.find))
+                }
+
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
     }
@@ -328,6 +432,9 @@ fun PreviewChatsContent(modifier: Modifier = Modifier) {
 @Composable
 fun PreviewBottomSheetAddUserContent(modifier: Modifier = Modifier) {
     ConnectopiaTheme {
-        BottomSheetAddUserContent()
+        BottomSheetAddUserContent(
+            addUserState = UiEvent.Success(UserData()),
+            findUserState = UiEvent.Success(UserData()),
+        )
     }
 }
