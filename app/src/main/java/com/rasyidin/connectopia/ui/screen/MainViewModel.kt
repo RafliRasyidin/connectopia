@@ -20,7 +20,7 @@ class MainViewModel(
                 if (isLoggedIn) {
                     firestore.collection("users")
                         .document(prefs.getUserId())
-                        .update("isOnline", isOnline)
+                        .update("online", isOnline)
                         .await()
                 }
             } catch (e: Exception) {

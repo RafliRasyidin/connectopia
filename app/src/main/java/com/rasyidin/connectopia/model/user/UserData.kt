@@ -12,5 +12,5 @@ data class UserData(
     val chatList: List<String> = emptyList(),
     val blockedUsers: List<String> = emptyList(),
     val stories: List<UserStory> = emptyList(),
-    val isOnline: Boolean = false,
+    var online: Boolean = false,
 )

@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -61,6 +62,7 @@ import com.rasyidin.connectopia.model.component.dummyStories
 import com.rasyidin.connectopia.model.component.dummyUserChatLists
 import com.rasyidin.connectopia.model.user.UserData
 import com.rasyidin.connectopia.ui.component.CardUserChat
+import com.rasyidin.connectopia.ui.component.ComposableLifecycle
 import com.rasyidin.connectopia.ui.component.InputTextField
 import com.rasyidin.connectopia.ui.component.SearchBar
 import com.rasyidin.connectopia.ui.navigation.Screen
@@ -77,6 +79,11 @@ fun ChatsScreen(
     navController: NavHostController,
     viewModel: ChatsViewModel = koinViewModel(),
 ) {
+    ComposableLifecycle { _, event ->
+        if (event == Lifecycle.Event.ON_START) {
+            viewModel.getChats()
+        }
+    }
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -86,6 +93,7 @@ fun ChatsScreen(
     val findUserState by viewModel.findUserState.collectAsStateWithLifecycle(
         initialValue = UiEvent.Idle(),
     )
+    val chatsState by viewModel.chatsState.collectAsStateWithLifecycle()
     ChatsContent(
         modifier = modifier,
         onClickChat = { userStory ->
@@ -94,7 +102,8 @@ fun ChatsScreen(
         onClickStory = { userChat ->
 
         },
-        onClickAdd = { showBottomSheet = true }
+        onClickAdd = { showBottomSheet = true },
+        chatsState = chatsState
     )
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -128,6 +137,7 @@ fun ChatsScreen(
 @Composable
 fun ChatsContent(
     modifier: Modifier = Modifier,
+    chatsState: UiEvent<List<UserChat>>,
     onClickStory: (UserStory) -> Unit,
     onClickChat: (UserChat) -> Unit,
     onClickAdd: () -> Unit
@@ -186,13 +196,24 @@ fun ChatsContent(
                 }
                 Spacer(modifier = Modifier.width(12.dp))
             }
-            Chats(
-                chats = dummyUserChatLists,
-                modifier = Modifier.padding(horizontal = 12.dp),
-                onClick = { userChat ->
-                    onClickChat(userChat)
+            if (chatsState is UiEvent.Failure) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = chatsState.message.asString())
                 }
-            )
+            }
+            if (chatsState is UiEvent.Success) {
+                Chats(
+                    chats = chatsState.data ?: emptyList(),
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    onClick = { userChat ->
+                        onClickChat(userChat)
+                    }
+                )
+            }
+
         }
     }
 }
@@ -423,7 +444,8 @@ fun PreviewChatsContent(modifier: Modifier = Modifier) {
             modifier = modifier,
             onClickStory = {},
             onClickChat = {},
-            onClickAdd = {}
+            onClickAdd = {},
+            chatsState = UiEvent.Success(dummyUserChatLists)
         )
     }
 }

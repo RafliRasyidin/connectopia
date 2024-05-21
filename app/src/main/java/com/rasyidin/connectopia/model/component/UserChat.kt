@@ -2,15 +2,15 @@ package com.rasyidin.connectopia.model.component
 
 
 data class UserChat(
-    val userId: String,
-    val email: String,
-    val username: String,
-    val lastChat: String,
-    val lastChatTime: String,
-    val lastChatTimeStamp: Long,
-    val profilePic: String,
-    val isOnline: Boolean,
-    val unreadChatCount: Int
+    val userId: String = "",
+    val email: String = "",
+    val username: String = "",
+    val lastChat: String = "",
+    val lastChatTime: String = "",
+    val lastChatTimeStamp: Long = 0,
+    val profilePic: String = "",
+    val isOnline: Boolean = false,
+    val unreadChatCount: Int = 0
 )
 
 val dummyUserChatLists = listOf(

@@ -49,19 +49,19 @@ fun CardUserChat(
             .fillMaxWidth()
             .clickable { onClick(chat) }
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Box(
                 modifier = Modifier
-                    .size(56.dp)
+                    .size(58.dp)
                     .clip(RoundedCornerShape(16.dp)),
                 contentAlignment = Alignment.BottomStart
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(52.dp)
                         .clip(RoundedCornerShape(16.dp)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -73,13 +73,14 @@ fun CardUserChat(
                         placeholder = painterResource(id = R.drawable.ic_profile),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(52.dp)
                     )
                 }
                 if (chat.isOnline) {
                     Box(
                         modifier = Modifier
                             .size(20.dp)
-                            .offset((34).dp, (-34).dp)
+                            .offset((38).dp, (-38).dp)
                             .border(3.dp, MaterialTheme.colorScheme.surface, CircleShape)
                             .background(
                                 color = Color.Green,
@@ -88,7 +89,7 @@ fun CardUserChat(
                     )
                 }
             }
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             Column(
                 modifier = Modifier.weight(1F)
             ) {
@@ -143,7 +144,7 @@ fun CardUserChat(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(14.dp))
         HorizontalDivider(thickness = .5.dp, color = MaterialTheme.colorScheme.outline)
     }
 }
