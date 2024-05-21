@@ -3,6 +3,7 @@ package com.rasyidin.connectopia.ui.screen
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.rasyidin.connectopia.data.local.AppPreferences
 import com.rasyidin.connectopia.ui.component.BottomNavBar
 import com.rasyidin.connectopia.ui.component.ComposableLifecycle
@@ -59,9 +61,10 @@ fun ConnectopiaApp(
     prefs: AppPreferences = koinInject(),
     viewModel: MainViewModel = koinViewModel(),
 ) {
-    val context = LocalContext.current
     var bottomNavBarState by rememberSaveable { mutableStateOf(false) }
     val navBackStack by navController.currentBackStackEntryAsState()
+    val systemUiController = rememberSystemUiController()
+
     ComposableLifecycle { _, event ->
         if (event == ON_START) {
             viewModel.setOnlineSession(true)
@@ -88,15 +91,15 @@ fun ConnectopiaApp(
             startDestination = Screen.Splash.route,
             builder = {
                 composable(Screen.Login.route) {
-                    context.showStatusBar()
+                    systemUiController.isStatusBarVisible = true
                     LoginScreen()
                 }
                 composable(Screen.OnBoarding.route) {
-                    context.showStatusBar()
+                    systemUiController.isStatusBarVisible = true
                     OnBoardingScreen(navController = navController)
                 }
                 composable(Screen.Chats.route) {
-                    context.showStatusBar()
+                    systemUiController.isStatusBarVisible = true
                     LaunchedEffect(Unit) { bottomNavBarState = true }
                     ChatsScreen(navController = navController)
                 }
@@ -114,7 +117,7 @@ fun ConnectopiaApp(
                 }
                 composable(Screen.Splash.route) {
                     SplashScreen()
-                    context.hideStatusBar()
+                    systemUiController.isStatusBarVisible = false
                     LaunchedEffect(Unit) {
                         bottomNavBarState = false
                         delay(1000)
