@@ -54,6 +54,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.airbnb.lottie.RenderMode
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieClipSpec
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.rasyidin.connectopia.R
 import com.rasyidin.connectopia.model.component.Stories
 import com.rasyidin.connectopia.model.component.UserChat
@@ -281,14 +287,30 @@ fun Chats(
     chats: List<UserChat>,
     onClick: (UserChat) -> Unit,
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        items(chats) { chat ->
-            CardUserChat(
-                chat = chat,
-                onClick = onClick
+    if (chats.isEmpty()) {
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_empty_chat))
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            LottieAnimation(
+                modifier = Modifier
+                    .padding(top = 24.dp)
+                    .size(200.dp),
+                composition = composition,
+                renderMode = RenderMode.HARDWARE
             )
+        }
+    } else {
+        LazyColumn(
+            modifier = modifier.fillMaxWidth()
+        ) {
+            items(chats) { chat ->
+                CardUserChat(
+                    chat = chat,
+                    onClick = onClick
+                )
+            }
         }
     }
 }
